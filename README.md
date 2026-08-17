@@ -88,19 +88,31 @@ Content-Type: application/json
 
 4. 打开或刷新 DSH Web 页面，进入一个会话，在聊天框输入内容后即可看到优化按钮。
 
-### 方式二：作为本地 bundle 装配
+### 方式二：使用 dsh 命令安装（项目官方方式）
 
-如果目标环境不使用超级模组注入器，可以使用 `dev_install_package` 将插件装配进目标 profile：
+如果你已安装 `dsh` CLI，可以按项目官方教程使用 `dsh plugin` 命令安装：
 
-```text
-dev_install_package {"dir": "C:/Users/<user>/.dsh/plugins/ui-prompt-optimizer", "profile": "web"}
+```bash
+# 从本地插件目录安装
+dsh plugin --profile web add C:/Users/<user>/.dsh/plugins/ui-prompt-optimizer
+
+# 或从 GitHub 仓库安装
+dsh plugin --profile web add github:xiyue718/dsh-ui-prompt-optimizer
 ```
 
-该方式会写入目标 profile 的 `package.json` / bundles 配置，并在重启后继续生效。
+安装后启动：
 
-### 方式三：手动放入 profile 的 bundle 体系
+```bash
+dsh --profile web
+```
 
-把插件目录放到目标 DSH 可解析的位置，并在 profile 的 `package.json` 中声明依赖和 `bundles` 条目，然后重启 DSH Web。此方式需要手工维护 profile 配置，适合已经使用本地 bundle 工作流的团队。
+查看组合配置：
+
+```bash
+dsh --profile web --dump-config
+```
+
+详细命令说明见项目文档：`docs/user/develop/basic/publish.md`。
 
 ## 使用步骤
 
