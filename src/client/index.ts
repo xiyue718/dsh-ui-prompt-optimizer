@@ -56,14 +56,25 @@ function SpinnerIcon() {
   )
 }
 
+/** Composer input snapshot a Session-scope slot occupant reads through `useInput`. */
+interface ComposerInputSnapshot {
+  /** Current unsent draft text. */
+  draft: string
+  /** Input lifecycle phase; only `plain` submits a whole-draft text prompt. */
+  phase: string
+}
+
 function PromptOptimizerButton(props: any) {
-  const { input, inputActions } = props
+  const { useInput, inputActions } = props
   const [state, setState] = useState<ButtonState>('idle')
   const [original, setOriginal] = useState('')
-  const draft = input.draft
+  // The composer's input machine reaches Session-scope slot occupants as the
+  // standard prop `useInput`; `conversation.input.right` owner props are empty.
+  const input: ComposerInputSnapshot | undefined = useInput((snapshot: ComposerInputSnapshot) => snapshot)
+  const draft = input?.draft ?? ''
   const draftRef = useRef(draft)
   draftRef.current = draft
-  const canOptimize = state === 'idle' && draft.trim() !== '' && input.phase === 'plain'
+  const canOptimize = state === 'idle' && draft.trim() !== '' && input?.phase === 'plain'
   const canUndo = state === 'optimized' && original !== ''
 
   useEffect(() => {
