@@ -10,16 +10,7 @@
 
 ## 安装
 
-### 方式一：超级模组注入器
-
-```text
-dev_build_plugin  {"dir": "C:/Users/<user>/.dsh/plugins/ui-prompt-optimizer"}
-dev_inject_plugin {"dir": "C:/Users/<user>/.dsh/plugins/ui-prompt-optimizer"}
-```
-
-打开或刷新 DSH Web，进入一个会话，在聊天框输入内容后即可看到优化按钮。
-
-### 方式二：dsh 命令安装（项目官方方式）
+### dsh 命令安装（项目官方方式）
 
 如果你已安装 `dsh` CLI，可以按项目官方教程使用 `dsh plugin` 命令安装：
 
@@ -45,7 +36,9 @@ dsh --profile web --dump-config
 
 详细命令说明见项目文档：`docs/user/develop/basic/publish.md`。
 
-构建产物：host 为 `lib/index.js`，client 为 `lib/client.js`，打包文件为 `dsh-external-ui-prompt-optimizer-0.1.0.tgz`。
+构建产物：host 为**自包含**的 `lib/index.js`，client 为 `lib/client.js`，打包文件为 `dsh-external-ui-prompt-optimizer-0.1.0.tgz`。
+
+安装前先构建一次：`DSH_CHECKOUT=<dsh 源码 checkout> bash scripts/build.sh`。官方渠道把插件装进 profile 后，宿主只从插件自身目录解析运行期依赖，所以 host 半由 tsdown 打包成自包含模块（内联 schemastery、zod 与 `@deepseek-ai/dsh-*` helper）；未打包的 `lib/index.js` 会让该行以 `failed to import` 停用。
 
 ## 使用
 
