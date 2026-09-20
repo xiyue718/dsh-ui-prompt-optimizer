@@ -78,7 +78,12 @@ export function apply(ctx: Context): void {
           model: selection.model,
           messages: [message],
           system: SYSTEM_PROMPT,
-          reasoningEffort: ReasoningEffortId('off'),
+          // Forward the configured reasoning effort; leave the field out when
+          // none is configured, because a model without reasoning capability
+          // rejects any explicit effort — including 'off'.
+          ...selection.reasoningEffort === undefined
+            ? {}
+            : { reasoningEffort: ReasoningEffortId(selection.reasoningEffort) },
           maxTokens: 2048,
           temperature: 0.3,
         })
