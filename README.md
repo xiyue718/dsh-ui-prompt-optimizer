@@ -36,7 +36,7 @@ dsh --profile web --dump-config
 
 详细命令说明见项目文档：`docs/user/develop/basic/publish.md`。
 
-构建产物：host 为**自包含**的 `lib/index.js`，client 为 `lib/client.js`，打包文件为 `dsh-external-ui-prompt-optimizer-0.1.1.tgz`。
+构建产物：host 为**自包含**的 `lib/index.js`，client 为 `lib/client.js`，打包文件为 `dsh-external-ui-prompt-optimizer-0.1.2.tgz`。
 
 安装前先构建一次：`DSH_CHECKOUT=<dsh 源码 checkout> bash scripts/build.sh`。官方渠道把插件装进 profile 后，宿主只从插件自身目录解析运行期依赖，所以 host 半由 tsdown 打包成自包含模块（内联 schemastery、zod 与 `@deepseek-ai/dsh-*` helper）；未打包的 `lib/index.js` 会让该行以 `failed to import` 停用。
 
