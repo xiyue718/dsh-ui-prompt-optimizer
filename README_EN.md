@@ -36,7 +36,7 @@ dsh --profile web --dump-config
 
 See the project documentation for details: `docs/user/develop/basic/publish.md`.
 
-Build artifacts: host `lib/index.js` (**self-contained**), client `lib/client.js`, package `dsh-external-ui-prompt-optimizer-0.1.0.tgz`.
+Build artifacts: host `lib/index.js` (**self-contained**), client `lib/client.js`, package `dsh-external-ui-prompt-optimizer-0.1.1.tgz`.
 
 Build once before installing: `DSH_CHECKOUT=<dsh checkout> bash scripts/build.sh`. Once a profile installs this package, the host resolves the plugin's runtime imports from the package's own directory only, so the host half is bundled into a self-contained module (inlining schemastery, zod, and the `@deepseek-ai/dsh-*` helpers); an unbundled `lib/index.js` leaves the row disabled with `failed to import`.
 

@@ -1,6 +1,6 @@
 {
   "name": "@dsh-external/ui-prompt-optimizer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Composer button to optimize the pending prompt and undo it",
   "private": true,
   "type": "module",
