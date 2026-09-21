@@ -5,6 +5,7 @@
  * button that restores the original draft.
  */
 import React, { useEffect, useRef, useState } from 'react'
+import { PromptOptimizerSection } from './settings.ts'
 
 export const inject = ['slots']
 
@@ -156,10 +157,43 @@ function NullDockEntry() {
   return null
 }
 
+/** Styles of the composer button and the settings section. */
+const PAGE_STYLE = `
+@keyframes dsh-prompt-optimizer-spin { to { transform: rotate(360deg) } }
+
+.dspo { display: flex; flex-direction: column; gap: 18px; max-width: 720px; font-family: var(--dsw-font-family); }
+.dspo-title { margin: 0; font-size: 18px; font-weight: 600; color: var(--dsw-alias-label-primary, #1a1a1a); }
+.dspo-intro { margin: 0; font-size: 13px; line-height: 1.6; color: var(--dsw-alias-label-secondary, #666); }
+.dspo-loading { margin: 0; font-size: 13px; color: var(--dsw-alias-label-secondary, #666); }
+.dspo-error { margin: 0; font-size: 12px; line-height: 1.6; color: var(--dsw-alias-state-error-primary, #d9480f); }
+.dspo-group { display: flex; flex-direction: column; gap: 10px; padding: 14px 16px; border: 1px solid var(--dsw-alias-border-primary, #e5e5e5); border-radius: 10px; }
+.dspo-group-head { display: flex; flex-direction: column; gap: 4px; }
+.dspo-group-title { margin: 0; font-size: 14px; font-weight: 600; color: var(--dsw-alias-label-primary, #1a1a1a); }
+.dspo-group-desc { margin: 0; font-size: 12px; line-height: 1.6; color: var(--dsw-alias-label-tertiary, #888); }
+.dspo-field { display: flex; flex-direction: column; gap: 6px; }
+.dspo-label { font-size: 13px; color: var(--dsw-alias-label-primary, #1a1a1a); }
+.dspo-select { width: 100%; padding: 7px 10px; font: inherit; font-size: 13px; color: var(--dsw-alias-label-primary, #1a1a1a); background: var(--dsw-alias-bg-primary, #fff); border: 1px solid var(--dsw-alias-border-primary, #d9d9d9); border-radius: 8px; }
+.dspo-select:disabled { opacity: 0.55; }
+.dspo-segmented { display: flex; flex-wrap: wrap; gap: 6px; }
+.dspo-seg { padding: 6px 12px; font: inherit; font-size: 13px; color: var(--dsw-alias-label-secondary, #666); background: transparent; border: 1px solid var(--dsw-alias-border-primary, #d9d9d9); border-radius: 999px; cursor: pointer; }
+.dspo-seg.is-active { color: var(--dsw-alias-label-primary, #1a1a1a); background: var(--dsw-alias-bg-secondary, #f2f2f2); border-color: var(--dsw-alias-state-info-primary, #4a90d9); }
+.dspo-seg:disabled { cursor: default; opacity: 0.55; }
+.dspo-help { margin: 0; font-size: 12px; line-height: 1.6; color: var(--dsw-alias-label-secondary, #666); }
+.dspo-levels { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; }
+.dspo-level { font-size: 12px; line-height: 1.6; color: var(--dsw-alias-label-tertiary, #888); }
+.dspo-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.dspo-btn { padding: 7px 16px; font: inherit; font-size: 13px; color: var(--dsw-alias-label-primary, #1a1a1a); background: var(--dsw-alias-bg-secondary, #f2f2f2); border: 1px solid var(--dsw-alias-border-primary, #d9d9d9); border-radius: 8px; cursor: pointer; }
+.dspo-btn.is-primary { color: #fff; background: var(--dsw-alias-state-info-primary, #4a90d9); border-color: transparent; }
+.dspo-btn:disabled { cursor: default; opacity: 0.5; }
+.dspo-toast { font-size: 12px; }
+.dspo-toast.is-ok { color: var(--dsw-alias-state-success-primary, #2f9e44); }
+.dspo-toast.is-bad { color: var(--dsw-alias-state-error-primary, #d9480f); }
+`
+
 export function apply(ctx: any): void {
   ctx.effect(() => {
     const style = document.createElement('style')
-    style.textContent = '@keyframes dsh-prompt-optimizer-spin { to { transform: rotate(360deg) } }'
+    style.textContent = PAGE_STYLE
     document.head.appendChild(style)
     return () => { style.remove() }
   }, '@dsh-external/ui-prompt-optimizer: spinner keyframes')
@@ -182,5 +216,15 @@ export function apply(ctx: any): void {
       order: 100,
       priority: 0,
     }, PromptOptimizerButton),
+  )
+
+  // Settings → 提示词优化: the model and reasoning effort this plugin optimizes with.
+  ctx.slots.inject('settings.section', () =>
+    ctx.slots.register({
+      name: 'settings.section',
+      id: 'prompt-optimizer',
+      order: 30,
+      label: () => '提示词优化',
+    }, PromptOptimizerSection),
   )
 }
